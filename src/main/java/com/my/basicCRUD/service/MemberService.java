@@ -10,6 +10,8 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.stream;
+
 @Service
 public class MemberService {
     @Autowired
@@ -64,5 +66,34 @@ public class MemberService {
         // 수정처리
         // save() : 해당 ID가 존재하면 수정, 없으면 신규로 입력
         memberRepository.save(member);
+    }
+
+    public List<MemberDto> searchName(String keyword) {
+        return memberRepository.searchName(keyword)
+        .stream()
+                .map(x -> MemberDto.fromEntity(x))
+                .toList();
+    }
+
+    public List<MemberDto> searchAddress(String keyword) {
+        List<Member> memberList = memberRepository.searchAddress(keyword);
+        List<MemberDto> dtoList = new ArrayList<>();
+        for(int i = 0; i < memberList.size(); i++) {
+            MemberDto dto = new MemberDto(
+                    memberList.get(i).getMemberId(),
+                    memberList.get(i).getName(),
+                    memberList.get(i).getAge(),
+                    memberList.get(i).getAddress()
+            );
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    public List<MemberDto> searchAll() {
+        return memberRepository.searchAll()
+                .stream()
+                .map(MemberDto::fromEntity)
+                .toList();
     }
 }

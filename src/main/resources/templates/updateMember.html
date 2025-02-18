@@ -6,6 +6,9 @@
     <script src="/js/check.js"></script>
     <title>Title</title>
 </head>
+<style>
+  span{font-size:10px; color:red}
+</style>
 <body>
   <form th:action="@{/member/update}" method="post" th:object="${member}">
     <div>
@@ -16,14 +19,17 @@
     <div>
       <label for="name">이름</label>
       <input type="text" th:field="*{name}" id="name">
+      <span th:errors="*{name}"></span>
     </div>
     <div>
       <label for="age">나이</label>
       <input type="text" th:field="*{age}" id="age">
+      <span th:errors="*{age}"></span>
     </div>
     <div>
       <label for="address">주소</label>
       <input type="text" th:field="*{address}" id="address">
+      <span th:errors="*{address}"></span>
     </div>
     <input type="submit" value="수정">
   </form>

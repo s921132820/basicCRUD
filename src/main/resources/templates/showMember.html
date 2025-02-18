@@ -50,5 +50,15 @@
   <form th:action="@{/member/insertForm}" method="get" align="center">
     <input type="submit" value="신규회원입력">
   </form>
+
+  <form th:action="@{/member/search}" mothod="get" align="center">
+      <select name="type">
+        <option selected value="">검색 내용 선택</option>
+        <option value="name">이름</option>
+        <option value="address">주소</option>
+      </select>
+      <input type="text" name="keyword" value="">
+      <input type="submit" value="검색">
+  </form>
 </body>
 </html>

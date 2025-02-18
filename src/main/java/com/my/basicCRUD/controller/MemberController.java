@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -75,13 +76,53 @@ public class MemberController {
     }
 
     @PostMapping("update")
-    public String update(MemberDto dto, RedirectAttributes redirectAttributes) {
+    public String update(
+            @Valid @ModelAttribute("member") MemberDto member
+            , BindingResult bindingResult
+            , RedirectAttributes redirectAttributes) {
+        // Validation
+        if(bindingResult.hasErrors()) {
+            return "updateMember";
+        }
         // 수정요청
-        log.info("### DTO : " + dto);
-        memberService.updateMember(dto);
+        log.info("### DTO : " + member);
+        memberService.updateMember(member);
 
         // 메세지 전송
         redirectAttributes.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
         return "redirect:/member/view";
+    }
+
+    @GetMapping("search")
+    public String search(
+            @RequestParam("type")String type,
+            @RequestParam("keyword")String keyword,
+            Model model
+    ) {
+      log.info("========== type" + type, ", keyword : " + keyword);
+        // type :
+        // 1. 공백 : 전체 자료를 ID에 대해서 오름차순 -> 출력
+        // Select * from member where name like '%김%' order by address desc
+        // 2. name : 이름 일부 검색
+        // 3. address : 주소 일부검색
+
+        // keyword:
+        // 1. 공백 : 전체 이름 또는 주소 검색
+        // 2. 해당 키워드로 검색
+
+        List<MemberDto> searchList = new ArrayList<>();
+        switch (type) {
+            case "name" :
+                searchList = memberService.searchName(keyword);
+                break;
+            case "address" :
+                searchList = memberService.searchAddress(keyword);
+                break;
+            default:
+                searchList = memberService.searchAll();
+                break;
+        }
+        model.addAttribute("list", searchList);
+        return "showMember";
     }
 }
