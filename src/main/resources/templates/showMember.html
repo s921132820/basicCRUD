@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <h1 align="center">회원정보리스트</h1>
+  <table border="1" align="center">
+    <thead>
+      <tr>
+        <td>id</td>
+        <td>이름</td>
+        <td>나이</td>
+        <td>주소</td>
+        <td>수정</td>
+        <td>삭제</td>
+      </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member : ${list}" th:object="${member}">
+      <td th:text="*{id}">1</td>
+      <td th:text="*{name}">홍길동</td>
+      <td th:text="*{age}">10</td>
+      <td th:text="*{address}">남원</td>
+      <td>
+        <button>수정</button>
+      </td>
+      <td>
+        <button>삭제</button>
+      </td>
+    </tr>
+    </tbody>
+    <br>
+    <form th:action="@{/member/insertForm}" method="get" align="center">
+      <input type="submit" value="신규회원입력">
+    </form>
+  </table>
+</body>
+</html>
