@@ -2,24 +2,35 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script src="/js/jquery.js"></script>
+  <script src="/js/check.js"></script>
     <title>Title</title>
 </head>
+<style>
+  span{font-size:10px; color:red}
+</style>
 <body>
-  <form th:action="@{/member/insert}" method="post">
+  <form th:action="@{/member/insert}" method="post" th:object="${memberDto}">
     <div>
       <label for="name">이름</label>
-      <input type="text" name="name">
+      <input type="text" name="name" id="name" th:filed="*{name}">
+      <span th:errors="*{name}"></span>
     </div>
     <div>
       <label for="age">나이</label>
-      <input type="text" name="age">
+      <input type="text" name="age" id="age" th:filed="*{age}">
+      <span th:errors="*{age}"></span>
     </div>
     <div>
       <label for="address">주소</label>
-      <input type="text" name="address">
+      <input type="text" name="address" id="address">
     </div>
-    <input type="submit" value="등록">
+    <input type="submit" value="등록" id="btnSubmit" th:filed="*{address}">
+    <span th:errors="*{address}"></span>
   </form>
   <a th:href="@{/member/view}" align="center">회원정보화면으로 돌아가기</a>
+  <script>
+
+  </script>
 </body>
 </html>
